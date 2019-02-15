@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<property name ="locations" value="classpath:jdbc.properties"/> <!-- classpath 에는 경로를 다 써줘야 한다 이거는 지금 경로가 바로 project밑임 -->
+</bean>	
+	
+	
+<!-- db setting  -->	
+<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+	<property name="driverClass" value="${driver}"></property>
+	<property name="url" value="${url}"></property>
+	<property name="username" value="${username}"></property>
+	<property name="password" value="${password}"></property>
+</bean>	
+
+<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<property name="dataSource" ref="dataSource"/>
+	<property name="configLocation" value="classpath:/com/myMaven/config/Configuration.xml"/>
+	<property name="mapperLocations" value="classpath:/com/myMaven/config/MyAccount.xml"></property>
+</bean>
+
+
+<!-- <bean id="sqlMapper" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg index="0" ref="sqlSessionFactoryBean"/>
+</bean> -->
+
+<!-- 위의 것을 한단 계 나아가서 객체 새로 지정함 sqlSession 객체로 만들었음  -->
+<bean id="sqlMap" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"/>
+</bean>
+
+<tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myMaven.config.MyAccount">
+
+<!--추가하기  -->
+<insert id="insertMember" parameterType="mvo">
+	insert into springmember values(#{id},#{pass},#{name},#{addr},#{memo},sysdate)
+</insert>
+
+<!--전체보기  -->
+<!-- <select id="listMember" resultType="mvo">
+	select * from springmember 
+</select> -->
+
+<!-- 삭제하기  -->
+<delete id="deleteMember" parameterType="String">
+	delete from springmember where id = #{id}
+</delete>
+
+<!-- 상세보기  -->
+<select id="detailMember" parameterType="String" resultType="mvo">
+	select * from springmember where id = #{id}
+</select>
+
+<!--수정하기  -->
+<update id="updateMember" parameterType="mvo">
+	update springmember set pass = #{pass}, name = #{name}, addr = #{addr}, memo = #{memo} where id = #{id}
+</update>
+
+<!--게시글 수  -->
+<select id="countMember" resultType="Integer">
+	select count(*) from springmember	
+</select>
+
+<!-- 페이징 -->
+<select id = "listMember" resultType="mvo" parameterType="map">
+<!--<를 lt&; 로 표시해야하는걸(일반 꺽새와 헷갈릴가바) CDATA를 사용하면 문자 그대로 인식 할 수 있게 해줌  -->
+<![CDATA[
+	select * from (select rownum rnum, aa.* from (select  * from springmember) aa) where rnum>=#{startRow} and rnum <=#{endRow}
+]]>
+</select>
+
+</mapper>
