@@ -35,7 +35,8 @@
 
 <!-- 페이징 -->
 <select id = "listMember" resultType="mvo" parameterType="map">
-<!--<를 lt&; 로 표시해야하는걸(일반 꺽새와 헷갈릴가바) CDATA를 사용하면 문자 그대로 인식 할 수 있게 해줌  -->
+<!--<를 lt&; 로 표시해야하는걸(일반 꺽새와 헷갈릴가바)
+ CDATA를 사용하면 문자 그대로 인식 할 수 있게 해줌  -->
 <![CDATA[
 	select * from (select rownum rnum, aa.* from (select  * from springmember) aa) where rnum>=#{startRow} and rnum <=#{endRow}
 ]]>
